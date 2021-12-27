@@ -1,4 +1,5 @@
 <template>
+  <a @click="createAccount">Create account</a>
   <div class="home">
     <ChatWindow v-if="username !== ''" :username="username" />
     <LoginForm v-else @usernameChosen="setUsername" />
@@ -19,6 +20,9 @@ export default defineComponent({
   methods: {
     setUsername (username: string) {
       this.username = username;
+    },
+    createAccount () {
+      this.$router.push({ name: 'AccountCreationForm' })
     }
   },
   data () {
