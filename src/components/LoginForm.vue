@@ -2,6 +2,14 @@
     <div>
         <span>Username</span>
         <input type="text" v-model="username" />
+        <div>
+          <span>Créer une nouvelle discussion</span>
+          <input type="checkbox" v-model="createNewDiscussion" />
+        </div>
+        <div v-if="!createNewDiscussion">
+          <span>Discussion Id</span>
+          <input type="text" v-model="discussionId" />
+        </div>
         <button @click="submit">Submit</button>
     </div>
 </template>
@@ -15,15 +23,23 @@ export default defineComponent({
     "usernameChosen"
   ],
   methods: {
-    submit () {
+    async submit () {
       if (this.username.length > 0) {
-        this.$emit("usernameChosen", this.username);
+        let discussion;
+        if (this.createNewDiscussion) {
+          discussion = await (await fetch("http://localhost:3000/textdiscussion", { method: "POST" })).json()
+        } else {
+          discussion = await (await fetch("http://localhost:3000/textdiscussion/" + this.discussionId)).json()
+        }
+        this.$emit("usernameChosen", { username: this.username, discussion });
       }
     }
   },
   data () {
     return {
-      username: ""
+      username: "",
+      createNewDiscussion: true,
+      discussionId: ""
     }
   }
 })

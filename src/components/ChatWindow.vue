@@ -17,12 +17,13 @@
 import { defineComponent } from 'vue';
 import { io } from "socket.io-client";
 import { ChatMessage } from "@/types/ChatMessage";
+import { ChatInfo } from "../types/ChatInfo";
 
 export default defineComponent({
   name: 'ChatWindow',
   props: {
-    username: {
-      type: String,
+    infos: {
+      type: ChatInfo,
       required: true
     }
   },
@@ -30,12 +31,13 @@ export default defineComponent({
     sendMessage (event: any) {
       event.preventDefault();
       if (this.message !== "") {
-        this.socket.emit("chat_message", { username: this.username, message: this.message })
+        this.socket.emit("chat_message", { username: this.infos.username, message: this.message })
         this.message = "";
       }
     }
   },
   created () {
+    this.username = this.infos.username
     this.socket.on("chat_message", ({ username, message }) => {
       this.messageList.push({ username, message })
       window.scrollTo(0, document.body.scrollHeight);
@@ -43,9 +45,10 @@ export default defineComponent({
   },
   data () {
     return {
-      socket: io("http://localhost:3000"),
+      socket: io("http://localhost:3000", { query: { textDiscussionId: this.infos.discussion._id } }),
       messageList: new Array<ChatMessage>(),
-      message: ""
+      message: "",
+      username: ""
     };
   }
 })
