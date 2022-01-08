@@ -1,15 +1,20 @@
 <template>
-  <div id="chat">
-      <div id="messages">
-        <div v-for="(messageItem, index) in messageList" :class="'messageItem ' + (username === messageItem.username ? 'localMessageItem' : 'messageItemDistant')" :key="index">
-          <div v-if="username === messageItem.username">{{ messageItem.message }}</div>
-          <div v-else >{{ messageItem.username }}: {{ messageItem.message }}</div>
+  <div class="ChatContainer">
+    <div class="InfoHeader">
+      <span>Id: {{ infos.discussion._id }}</span>
+    </div>
+    <div id="chat">
+        <div id="messages">
+          <div v-for="(messageItem, index) in messageList" :class="'messageItem ' + (username === messageItem.username ? 'localMessageItem' : 'messageItemDistant')" :key="index">
+            <div v-if="username === messageItem.username">{{ messageItem.message }}</div>
+            <div v-else >{{ messageItem.username }}: {{ messageItem.message }}</div>
+          </div>
         </div>
-      </div>
-      <form id="form" @submit="sendMessage">
-          <input id="message" autocomplete="off" v-model="message" />
-          <button>Send</button>
-      </form>
+        <form id="form" @submit="sendMessage">
+            <input id="message" autocomplete="off" v-model="message" />
+            <button>Send</button>
+        </form>
+    </div>
   </div>
 </template>
 
@@ -38,6 +43,7 @@ export default defineComponent({
   },
   created () {
     this.username = this.infos.username
+    this.messageList = this.infos.discussion.messages;
     this.socket.on("chat_message", ({ username, message }) => {
       this.messageList.push({ username, message })
       window.scrollTo(0, document.body.scrollHeight);
@@ -56,11 +62,17 @@ export default defineComponent({
 
 <style scoped>
   #chat {
-    height: 100vh;
+    height: 90vh;
     overflow: hidden;
   }
+  .InfoHeader {
+    height: 10vh;
+  }
+  .ChatContainer {
+    height: 100vh;
+  }
   #messages {
-    height: 95vh;
+    height: 85vh;
     width: 100%;
     display: flex;
     margin: 0;
