@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <ChatWindow v-if="username !== ''" :username="username" />
+    <ChatWindow v-if="infos !== null" :infos="infos" />
     <LoginForm v-else @usernameChosen="setUsername" />
   </div>
 </template>
@@ -9,6 +9,7 @@
 import { defineComponent } from 'vue'
 import ChatWindow from '@/components/ChatWindow.vue'
 import LoginForm from '@/components/LoginForm.vue'
+import { ChatInfo } from '@/types/ChatInfo';
 
 export default defineComponent({
   name: 'Home',
@@ -17,13 +18,13 @@ export default defineComponent({
     LoginForm
   },
   methods: {
-    setUsername (username: string) {
-      this.username = username;
+    setUsername (infos: ChatInfo) {
+      this.infos = infos;
     }
   },
   data () {
     return {
-      username: ""
+      infos: null as ChatInfo | null
     };
   }
 })
