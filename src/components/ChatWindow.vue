@@ -51,7 +51,7 @@ export default defineComponent({
   },
   data () {
     return {
-      socket: io("http://localhost:3000", { query: { textDiscussionId: this.infos.discussion._id } }),
+      socket: io(process.env.VUE_APP_BACK_URL_WS, { transports: ['websocket'], query: { textDiscussionId: this.infos.discussion._id } }),
       messageList: new Array<ChatMessage>(),
       message: "",
       username: ""

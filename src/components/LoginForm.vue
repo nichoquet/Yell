@@ -27,9 +27,9 @@ export default defineComponent({
       if (this.username.length > 0) {
         let discussion;
         if (this.createNewDiscussion) {
-          discussion = await (await fetch("http://localhost:3000/textdiscussion", { method: "POST" })).json()
+          discussion = await (await fetch(process.env.VUE_APP_BACK_URL + "/textdiscussion", { method: "POST" })).json()
         } else {
-          discussion = await (await fetch("http://localhost:3000/textdiscussion/" + this.discussionId)).json()
+          discussion = await (await fetch(process.env.VUE_APP_BACK_URL + "/textdiscussion/" + this.discussionId)).json()
         }
         this.$emit("usernameChosen", { username: this.username, discussion });
       }
