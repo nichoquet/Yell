@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Module } from "vuex";
-import LoginCredentialsRequest from "@/modelsInterfaces/HttpRequests/LoginCredentialsRequest";
-import RegisterUserRequest from "@/modelsInterfaces/HttpRequests/RegisterUserRequest";
+import LoginCredentialsRequest from "@/types/HttpRequests/LoginCredentialsRequest";
+import RegisterUserRequest from "@/types/HttpRequests/RegisterUserRequest";
 import { User } from "@/types/User";
 const account: Module<any, any> = {
   namespaced: true,
