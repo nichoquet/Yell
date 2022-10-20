@@ -1,4 +1,6 @@
 # yell
+Chatting application (In progress)
+
 
 ## Project setup
 ```
