@@ -1,16 +1,13 @@
 <template>
     <div>
         <span>Username</span>
-        <input type="text" v-model="username" />
+        <input type="text" v-model="username" autocomplete="username" />
+        <span>Password</span>
+        <input type="password" v-model="password" />
+        <button type="button" @click="submit">Submit</button>
         <div>
-          <span>Créer une nouvelle discussion</span>
-          <input type="checkbox" v-model="createNewDiscussion" />
+          <router-link to="/create-account">Create account</router-link>
         </div>
-        <div v-if="!createNewDiscussion">
-          <span>Discussion Id</span>
-          <input type="text" v-model="discussionId" />
-        </div>
-        <button @click="submit">Submit</button>
     </div>
 </template>
 
@@ -19,27 +16,21 @@ import { defineComponent } from "vue"
 
 export default defineComponent({
   name: "LoginForm",
-  event: [
-    "usernameChosen"
-  ],
   methods: {
-    async submit () {
-      if (this.username.length > 0) {
-        let discussion;
-        if (this.createNewDiscussion) {
-          discussion = await (await fetch(process.env.VUE_APP_BACK_URL + "/textdiscussion", { method: "POST" })).json()
-        } else {
-          discussion = await (await fetch(process.env.VUE_APP_BACK_URL + "/textdiscussion/" + this.discussionId)).json()
-        }
-        this.$emit("usernameChosen", { username: this.username, discussion });
+    submit () {
+      if (this.username.length > 0 && this.password.length > 0) {
+        this.$store.dispatch('account/login', { username: this.username, password: this.password }).then(() => {
+          location.reload();
+        }).catch(() => {
+          alert('erreur lord du login')
+        })
       }
     }
   },
   data () {
     return {
-      username: "",
-      createNewDiscussion: true,
-      discussionId: ""
+      username: '',
+      password: ''
     }
   }
 })
